@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TiendaVideojuegos.Models.Producto>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Categoria.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Precio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RutaImagen)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+            <tr>
+        @using (Html.BeginForm("AgregarCarrito", "Productoes", FormMethod.Post))
+        {
+                <td>
+                    @Html.DisplayFor(modelItem => item.Categoria.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Precio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descripcion)
+                </td>
+                <td>
+                    <img class="img-responsive" width="80" height="80" src="@Url.Content(item.RutaImagen)" alt="Image" />
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.ProductoID }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.ProductoID }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.ProductoID })
+                </td>
+                <td>
+                     <input type="submit" id="submitId" value="Agregar al carrito" />
+                    @*@Html.ActionLink("Agregar al carrito", "AgregarCarrito", "Productoes", new { id = item.ProductoID, Cantidad = "Boton" }, new { @class = "btn btn-primary", @role = "submit" })*@
+                    @Html.TextBox("Cantidad", 0, new { @type = "number" })
+                    @Html.HiddenFor(modelItem=>item.ProductoID)
+
+                </td>
+        }
+            </tr>
+    }
+
+    </table>
+   
+
+

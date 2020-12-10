@@ -1,0 +1,57 @@
+﻿@model TiendaVideojuegos.Models.Producto
+
+@{
+    ViewBag.Title = "AgregarCarrito";
+}
+
+<h2>Se ha añadido correctamente el producto!</h2>
+
+<div>
+    <h4>@Html.DisplayFor(model => model.Nombre)</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Categoria.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Categoria.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Precio)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Precio)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.RutaImagen)
+        </dt>
+
+        <dd>
+            <img class="img-responsive" width="80" height="80" src="@Url.Content(Model.RutaImagen)" alt="Image" />
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>
