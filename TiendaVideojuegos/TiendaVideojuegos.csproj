@@ -132,6 +132,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CarritoItemsController.cs" />
     <Compile Include="Controllers\CategoriasController.cs" />
+    <Compile Include="Controllers\ClientesController.cs" />
+    <Compile Include="Controllers\ComprasController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductoesController.cs" />
     <Compile Include="DAL\TiendaContext.cs" />
@@ -162,10 +164,28 @@
     <Compile Include="Migrations\202012102156554_Agregado subtotal al items carrito.designer.cs">
       <DependentUpon>202012102156554_Agregado subtotal al items carrito.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202012110401293_Se añade el cliente y el modelo compras.cs" />
+    <Compile Include="Migrations\202012110401293_Se añade el cliente y el modelo compras.designer.cs">
+      <DependentUpon>202012110401293_Se añade el cliente y el modelo compras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012110406590_Se añade el cliente solamente.cs" />
+    <Compile Include="Migrations\202012110406590_Se añade el cliente solamente.designer.cs">
+      <DependentUpon>202012110406590_Se añade el cliente solamente.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012110411219_Se añade el modelo compras.cs" />
+    <Compile Include="Migrations\202012110411219_Se añade el modelo compras.designer.cs">
+      <DependentUpon>202012110411219_Se añade el modelo compras.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202012110437007_Se añade cantidad a compras.cs" />
+    <Compile Include="Migrations\202012110437007_Se añade cantidad a compras.designer.cs">
+      <DependentUpon>202012110437007_Se añade cantidad a compras.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\CarritoItem.cs" />
     <Compile Include="Models\CarritoProductos.cs" />
     <Compile Include="Models\Categoria.cs" />
+    <Compile Include="Models\Cliente.cs" />
+    <Compile Include="Models\Compra.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -221,6 +241,17 @@
     <Content Include="Views\CarritoItems\Details.cshtml" />
     <Content Include="Views\CarritoItems\Edit.cshtml" />
     <Content Include="Views\CarritoItems\Index.cshtml" />
+    <Content Include="Views\Clientes\Create.cshtml" />
+    <Content Include="Views\Clientes\Delete.cshtml" />
+    <Content Include="Views\Clientes\Details.cshtml" />
+    <Content Include="Views\Clientes\Edit.cshtml" />
+    <Content Include="Views\Clientes\Index.cshtml" />
+    <Content Include="Views\Compras\Create.cshtml" />
+    <Content Include="Views\Compras\Delete.cshtml" />
+    <Content Include="Views\Compras\Details.cshtml" />
+    <Content Include="Views\Compras\Edit.cshtml" />
+    <Content Include="Views\Compras\Index.cshtml" />
+    <Content Include="Views\Compras\Confirmacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -256,6 +287,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202012102156554_Agregado subtotal al items carrito.resx">
       <DependentUpon>202012102156554_Agregado subtotal al items carrito.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012110401293_Se añade el cliente y el modelo compras.resx">
+      <DependentUpon>202012110401293_Se añade el cliente y el modelo compras.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012110406590_Se añade el cliente solamente.resx">
+      <DependentUpon>202012110406590_Se añade el cliente solamente.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012110411219_Se añade el modelo compras.resx">
+      <DependentUpon>202012110411219_Se añade el modelo compras.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202012110437007_Se añade cantidad a compras.resx">
+      <DependentUpon>202012110437007_Se añade cantidad a compras.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

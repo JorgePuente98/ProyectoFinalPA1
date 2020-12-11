@@ -9,5 +9,6 @@ namespace TiendaVideojuegos.Models
     {
         //Lista que servirá como nuestro carrito
         public static List<CarritoItem> listaProductos = new List<CarritoItem>();
+        public static string NombreCliente = "";
     }
 }

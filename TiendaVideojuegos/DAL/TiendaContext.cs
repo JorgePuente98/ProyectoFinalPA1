@@ -22,5 +22,9 @@ namespace TiendaVideojuegos.DAL
         }
 
         public System.Data.Entity.DbSet<TiendaVideojuegos.Models.CarritoItem> CarritoItems { get; set; }
+
+        public System.Data.Entity.DbSet<TiendaVideojuegos.Models.Cliente> Clientes { get; set; }
+
+        public System.Data.Entity.DbSet<TiendaVideojuegos.Models.Compra> Compras { get; set; }
     }
 }

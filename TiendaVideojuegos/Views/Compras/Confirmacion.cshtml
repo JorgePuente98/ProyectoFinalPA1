@@ -1,0 +1,15 @@
+﻿@model TiendaVideojuegos.Models.Compra
+
+@{
+    ViewBag.Title = "Confirmacion";
+}
+
+<h2>Confirmacion de compra</h2>
+
+<div>
+    <h2>Gracias por su compra, @TiendaVideojuegos.Models.CarritoProductos.NombreCliente!</h2>
+    <hr />
+</div>
+<p>
+    @Html.ActionLink("Back to List", "Index")
+</p>

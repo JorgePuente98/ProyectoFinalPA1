@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
 
 <table class="table">
@@ -57,11 +57,10 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.ProductoID })
                 </td>
                 <td>
-                     <input type="submit" id="submitId" value="Agregar al carrito" />
+                     <input type="submit" class="btn btn-primary" id="submitId" value="Agregar al carrito" />
                     @*@Html.ActionLink("Agregar al carrito", "AgregarCarrito", "Productoes", new { id = item.ProductoID, Cantidad = "Boton" }, new { @class = "btn btn-primary", @role = "submit" })*@
                     @Html.TextBox("Cantidad", 0, new { @type = "number" })
                     @Html.HiddenFor(modelItem=>item.ProductoID)
-
                 </td>
         }
             </tr>
