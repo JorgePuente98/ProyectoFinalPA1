@@ -1,31 +1,41 @@
-﻿@model IEnumerable<TiendaVideojuegos.Models.Producto>
+﻿@*@model IEnumerable<TiendaVideojuegos.Models.Producto>*@
+@model PagedList.IPagedList<TiendaVideojuegos.Models.Producto>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Productos";
 }
 
-<h2>Index</h2>
+<h2>Productos</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create", null, new { @class = "btn btn-primary" })
 </p>
+@using (Html.BeginForm("Index", "Productoes", FormMethod.Get))
+{
+    <p>
+        Búsqueda por nombre, precio o categoria: @Html.TextBox("strBusqueda", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Categoria.Nombre)
+            @Html.ActionLink("Categoria", "Index", new { sortOrder = ViewBag.CategoriaSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Nombre)
+            @Html.ActionLink("Producto", "Index", new { sortOrder = ViewBag.NombreSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Precio)
+            @Html.ActionLink("Precio", "Index", new { sortOrder = ViewBag.PrecioSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
+            Descripción
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RutaImagen)
+            Carátula
         </th>
         <th></th>
         <th></th>
@@ -33,9 +43,9 @@
 
     @foreach (var item in Model)
     {
-            <tr>
-        @using (Html.BeginForm("AgregarCarrito", "Productoes", FormMethod.Post))
-        {
+        <tr>
+            @using (Html.BeginForm("AgregarCarrito", "Productoes", FormMethod.Post))
+            {
                 <td>
                     @Html.DisplayFor(modelItem => item.Categoria.Nombre)
                 </td>
@@ -57,16 +67,21 @@
                     @Html.ActionLink("Delete", "Delete", new { id = item.ProductoID })
                 </td>
                 <td>
-                     <input type="submit" class="btn btn-primary" id="submitId" value="Agregar al carrito" />
+                    <input type="submit" class="btn btn-primary" id="submitId" value="Agregar al carrito" />
                     @*@Html.ActionLink("Agregar al carrito", "AgregarCarrito", "Productoes", new { id = item.ProductoID, Cantidad = "Boton" }, new { @class = "btn btn-primary", @role = "submit" })*@
-                    @Html.TextBox("Cantidad", 0, new { @type = "number" })
-                    @Html.HiddenFor(modelItem=>item.ProductoID)
+                    @Html.TextBox("Cantidad", 1, new { @type = "number", min = "1" })
+                    @Html.HiddenFor(modelItem => item.ProductoID)
                 </td>
-        }
-            </tr>
+            }
+        </tr>
     }
 
-    </table>
-   
+</table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
 
 

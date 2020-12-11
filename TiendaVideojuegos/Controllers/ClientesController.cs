@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,9 +17,52 @@ namespace TiendaVideojuegos.Controllers
         private TiendaContext db = new TiendaContext();
 
         // GET: Clientes
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string strBusqueda, int? page)
         {
-            return View(db.Clientes.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NombreSortParm = String.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
+            ViewBag.ApellidosSortParm = sortOrder == "Apellidos" ? "Apellidos_desc" : "Apellidos";
+            ViewBag.EmailSortParm = sortOrder == "Email" ? "Email_desc" : "Email";
+            if (strBusqueda != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                strBusqueda = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = strBusqueda;
+            var clientes = db.Clientes.AsEnumerable();
+            if (!String.IsNullOrEmpty(strBusqueda))
+            {
+                clientes = clientes.Where(s => s.Nombre.Contains(strBusqueda) || s.Apellidos.Contains(strBusqueda) || s.Email.Contains(strBusqueda));
+            }
+            switch (sortOrder)
+            {
+                case "nombre_desc":
+                    clientes = clientes.OrderByDescending(s => s.Nombre);
+                    break;
+                case "Apellidos":
+                    clientes = clientes.OrderBy(s => s.Apellidos);
+                    break;
+                case "Apellidos_desc":
+                    clientes = clientes.OrderByDescending(s => s.Apellidos);
+                    break;
+                case "Email":
+                    clientes = clientes.OrderBy(s => s.Email);
+                    break;
+                case "Email_desc":
+                    clientes = clientes.OrderByDescending(s => s.Email);
+                    break;
+                default:
+                    clientes = clientes.OrderBy(s => s.Nombre);
+                    break;
+            }
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            return View(clientes.ToPagedList(pageNumber, pageSize));
+            //return View(db.Clientes.ToList());
         }
 
         // GET: Clientes/Details/5

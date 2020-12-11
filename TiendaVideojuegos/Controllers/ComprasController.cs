@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,10 +17,60 @@ namespace TiendaVideojuegos.Controllers
         private TiendaContext db = new TiendaContext();
 
         // GET: Compras
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string strBusqueda, int? page)
         {
-            var compras = db.Compras.Include(c => c.Cliente).Include(c => c.Producto);
-            return View(compras.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NombreSortParm = String.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
+            ViewBag.CategoriaSortParm = sortOrder == "Producto" ? "Producto_desc" : "Producto";
+            ViewBag.SubtotalSortParm = sortOrder == "Subtotal" ? "Subtotal_desc" : "Subtotal";
+            ViewBag.FechaSortParm = sortOrder == "Fecha" ? "Fecha_desc" : "Fecha";
+            if (strBusqueda != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                strBusqueda = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = strBusqueda;
+            var compras = db.Compras.AsEnumerable();
+            if (!String.IsNullOrEmpty(strBusqueda))
+            {
+                compras = compras.Where(s => s.Cliente.Nombre.Contains(strBusqueda) || s.Producto.Nombre.Contains(strBusqueda));
+            }
+            switch (sortOrder)
+            {
+                case "nombre_desc":
+                    compras = compras.OrderByDescending(s => s.Cliente.Nombre);
+                    break;
+                case "Producto":
+                    compras = compras.OrderBy(s => s.Producto.Nombre);
+                    break;
+                case "Producto_desc":
+                    compras = compras.OrderByDescending(s => s.Producto.Nombre);
+                    break;
+                case "Subtotal":
+                    compras = compras.OrderBy(s => s.SubTotal);
+                    break;
+                case "Subtotal_desc":
+                    compras = compras.OrderByDescending(s => s.SubTotal);
+                    break;
+                case "Fecha":
+                    compras = compras.OrderBy(s => s.FechaCompra);
+                    break;
+                case "Fecha_desc":
+                    compras = compras.OrderByDescending(s => s.FechaCompra);
+                    break;
+                default:
+                    compras = compras.OrderBy(s => s.Cliente.Nombre);
+                    break;
+            }
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            return View(compras.ToPagedList(pageNumber, pageSize));
+            //var compras = db.Compras.Include(c => c.Cliente).Include(c => c.Producto);
+            //return View(compras.ToList());
         }
 
 

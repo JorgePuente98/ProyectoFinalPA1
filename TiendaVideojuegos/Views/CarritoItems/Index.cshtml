@@ -3,55 +3,59 @@
 @{
     ViewBag.Title = "Carrito";
 }
-<div class="jumbotron">
-    <h2>Tu carrito de compras</h2>
+    <div class="jumbotron">
+        <h2>Tu carrito de compras</h2>
 
-    <p>
-        @*@Html.ActionLink("Create New", "Create")*@
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Producto.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Producto.RutaImagen)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Cantidad)
-            </th>
-            <th>
-                Subtotal
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach (var item in Model)
-        {
-
+        <p>
+            @*@Html.ActionLink("Create New", "Create")*@
+        </p>
+        <table class="table">
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Producto.Nombre)
-                </td>
-                <td>
-                    <img class="img-responsive" width="80" height="80" src="@Url.Content(item.Producto.RutaImagen)" alt="Image" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cantidad)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Subtotal)
-                </td>
-                <td>
-                    |
-                    @Html.ActionLink("Delete", "Delete", item)
-                </td>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Producto.RutaImagen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Cantidad)
+                </th>
+                <th>
+                    Subtotal
+                </th>
+                <th></th>
             </tr>
+
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+                    </td>
+                    <td>
+                        <img class="img-responsive" width="80" height="80" src="@Url.Content(item.Producto.RutaImagen)" alt="Image" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cantidad)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Subtotal)
+                    </td>
+                    <td>
+                        |
+                        @Html.ActionLink("Delete", "Delete", item)
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <h2>El total es: @Model.Sum(i => i.Subtotal).ToString("C") DLLS</h2><br />
+        @if (TiendaVideojuegos.Models.CarritoProductos.listaProductos.Count > 0)
+        {
+            @Html.ActionLink("Proceder a la compra", "Create", "Compras", null, new Dictionary<string, object>
+              { { "class", "btn btn-primary" }, { "onclick", "return confirm('Está seguro de proceder a la compra?')" } })
         }
 
-    </table>
-
-    <h2>El total es: @Model.Sum(i => i.Subtotal).ToString("C") DLLS</h2><br />
-    @Html.ActionLink("Proceder a la compra", "Create", "Compras", null, new Dictionary<string, object>
-    { { "class", "btn btn-primary" }, { "onclick", "return confirm('Está seguro de proceder a la compra?')" } })
-</div>
+    </div>

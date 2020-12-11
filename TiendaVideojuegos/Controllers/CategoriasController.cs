@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,9 +17,39 @@ namespace TiendaVideojuegos.Controllers
         private TiendaContext db = new TiendaContext();
 
         // GET: Categorias
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string strBusqueda, int? page)
         {
-            return View(db.Categorias.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NombreSortParm = String.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
+            if (strBusqueda != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                strBusqueda = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = strBusqueda;
+            var categorias = db.Categorias.AsEnumerable();
+            if (!String.IsNullOrEmpty(strBusqueda))
+            {
+                categorias = categorias.Where(s => s.Nombre.Contains(strBusqueda));
+            }
+            switch (sortOrder)
+            {
+                case "nombre_desc":
+                    categorias = categorias.OrderByDescending(s => s.Nombre);
+                    break;
+                default:
+                    categorias = categorias.OrderBy(s => s.Nombre);
+                    break;
+            }
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            return View(categorias.ToPagedList(pageNumber, pageSize));
+
+            //return View(db.Categorias.ToList());
         }
 
         // GET: Categorias/Details/5

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -16,10 +17,53 @@ namespace TiendaVideojuegos.Controllers
         private TiendaContext db = new TiendaContext();
 
         // GET: Productoes
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string strBusqueda, int? page)
         {
-            var productos = db.Productos.Include(p => p.Categoria);
-            return View(productos.ToList());
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NombreSortParm = String.IsNullOrEmpty(sortOrder) ? "nombre_desc" : "";
+            ViewBag.CategoriaSortParm = sortOrder == "Categoria" ? "Categoria_desc" : "Categoria";
+            ViewBag.PrecioSortParm = sortOrder == "Precio" ? "Precio_desc" : "Precio";
+            if (strBusqueda != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                strBusqueda = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = strBusqueda;
+            var productos = db.Productos.AsEnumerable();
+            if (!String.IsNullOrEmpty(strBusqueda))
+            {
+                productos = productos.Where(s => s.Nombre.Contains(strBusqueda) || s.Categoria.Nombre.Contains(strBusqueda));
+            }
+            switch (sortOrder)
+            {
+                case "nombre_desc":
+                    productos = productos.OrderByDescending(s => s.Nombre);
+                    break;
+                case "Categoria":
+                    productos = productos.OrderBy(s => s.Categoria.Nombre);
+                    break;
+                case "Categoria_desc":
+                    productos = productos.OrderByDescending(s => s.Categoria.Nombre);
+                    break;
+                case "Precio":
+                    productos = productos.OrderBy(s => s.Precio);
+                    break;
+                case "Precio_desc":
+                    productos = productos.OrderByDescending(s => s.Precio);
+                    break;
+                default:
+                    productos = productos.OrderBy(s => s.Nombre);
+                    break;
+            }
+            int pageSize = 4;
+            int pageNumber = (page ?? 1);
+            return View(productos.ToPagedList(pageNumber, pageSize));
+            //var productos = db.Productos.Include(p => p.Categoria);
+            //return View(productos.ToList());
         }
         //Método para agregar el producto al carrito
         [HttpPost]

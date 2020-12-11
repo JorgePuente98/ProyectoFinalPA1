@@ -1,4 +1,7 @@
-﻿@model IEnumerable<TiendaVideojuegos.Models.Compra>
+﻿@*@model IEnumerable<TiendaVideojuegos.Models.Compra>*@
+@model PagedList.IPagedList<TiendaVideojuegos.Models.Compra>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 @{
     ViewBag.Title = "Index";
@@ -6,45 +9,59 @@
 
 <h2>Historial de compras</h2>
 
-<p>
-</p>
+@using (Html.BeginForm("Index", "Compras", FormMethod.Get))
+{
+    <p>
+        Búsqueda por nombre o producto: @Html.TextBox("strBusqueda", ViewBag.CurrentFilter as string)
+        <input type="submit" value="Buscar" />
+    </p>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Cliente.Nombre)
+            @Html.ActionLink("Cliente", "Index", new { sortOrder = ViewBag.NombreSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Producto.Nombre)
+            @Html.ActionLink("Producto", "Index", new { sortOrder = ViewBag.ProductoSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SubTotal)
+            @Html.ActionLink("Subtotal", "Index", new { sortOrder = ViewBag.SubtotalSortParm, currentFilter = ViewBag.CurrentFilter })
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FechaCompra)
+            @Html.ActionLink("Fecha de compra", "Index", new { sortOrder = ViewBag.FechaSortParm, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+           Cantidad
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Cliente.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Producto.Nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SubTotal)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FechaCompra)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cliente.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Producto.Nombre)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.SubTotal)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.FechaCompra)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Cantidad)
+    </td>
+
+</tr>
+    }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
