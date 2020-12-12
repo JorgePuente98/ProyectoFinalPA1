@@ -120,6 +120,10 @@ namespace TiendaVideojuegos.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (producto.RutaImagen == null)
+                {
+                    producto.RutaImagen = "https://previews.123rf.com/images/pavelstasevich/pavelstasevich1811/pavelstasevich181101027/112815900-no-image-available-icon-flat-vector.jpg";
+                }
                 db.Productos.Add(producto);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -154,6 +158,10 @@ namespace TiendaVideojuegos.Controllers
         {
             if (ModelState.IsValid)
             {
+                if(producto.RutaImagen==null| producto.RutaImagen == "")
+                {
+                    producto.RutaImagen = "https://previews.123rf.com/images/pavelstasevich/pavelstasevich1811/pavelstasevich181101027/112815900-no-image-available-icon-flat-vector.jpg";
+                }
                 db.Entry(producto).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
